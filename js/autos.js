@@ -11,7 +11,7 @@ function loadAutos() {
                 <div class="card-body">
                     <h5 class="card-title">${auto.marca} ${auto.modelo} ${auto.anio}
                     <p class="card-text"><strong>Precio: </strong>$${auto.price}
-                    <a href="auto-detalle.html?id=${auto.id}" class="btn btn-primary">Ver Detalle</a>
+                    <a href="auto-detalle.html?id=${auto.id}" class="btn btn-success">Ver Detalle</a>
                 </div>
             </div>
         `;
