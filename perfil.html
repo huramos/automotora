@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRH Automóviles - Perfil</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="img/logo.png" alt="Logo HRH-Automoviles" width="30" height="30"
+                    class="d-inline-block align-top">
+                HRH Automóviles
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="automoviles.html">Automóviles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="logout()">Cerrar Sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h2 class="text-center">Perfil del Usuario</h2>
+
+        <form id="profileForm" novalidate>
+            <div class="mb-3">
+                <label for="username" class="form-label">Nombre de Usuario</label>
+                <input type="text" class="form-control" id="username" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="email" required>
+                <div class="invalid-feedback">Por favor, introduce un correo electrónico válido.</div>
+            </div>
+            <div class="mb-3">
+                <label for="newPassword" class="form-label">Nueva Contraseña</label>
+                <input type="password" class="form-control" id="newPassword"
+                    pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$">
+                <div class="invalid-feedback">La contraseña debe tener al menos 6 caracteres, incluyendo una letra
+                    mayúscula, un número y un carácter especial.</div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Actualizar Perfil</button>
+        </form>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/profile.js"></script>
+
+    <script>
+        document.getElementById("profileForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const newPassword = document.getElementById("newPassword").value;
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            let currentUser = JSON.parse(sessionStorage.getItem('authenticatedUser'));
+
+            const form = e.target;
+            if (!form.checkValidity()) {
+                form.classList.add("was-validated");
+                return;
+            }
+
+            users = users.map(user => {
+                if (user.username === currentUser.username) {
+                    user.email = email;
+                    if (newPassword) user.password = newPassword;
+                    currentUser.email = email;
+                    if (newPassword) currentUser.password = newPassword;
+                }
+                return user;
+            });
+
+            localStorage.setItem('users', JSON.stringify(users));
+            sessionStorage.setItem('authenticatedUser', JSON.stringify(currentUser));
+            alert("Perfil actualizado exitosamente.");
+        });
+    </script>
+</body>
+
+</html>
