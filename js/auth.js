@@ -34,6 +34,3 @@ function logout() {
 function isAuthenticated() {
     return sessionStorage.getItem('authenticatedUser') !== null;
 }
-
-
-
